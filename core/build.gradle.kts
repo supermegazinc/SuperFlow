@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
 	alias(libs.plugins.android.library)
+	alias(libs.plugins.compose.compiler)
 	id("maven-publish")
 }
 
@@ -37,6 +38,9 @@ android {
 			withSourcesJar()
 		}
 	}
+	buildFeatures {
+		compose = true
+	}
 }
 
 publishing {
@@ -55,6 +59,11 @@ dependencies {
 	implementation(libs.androidx.core.ktx)
 
 	testImplementation(libs.junit)
+
+	val composeBom = platform("androidx.compose:compose-bom:2026.03.00")
+	implementation(composeBom)
+	androidTestImplementation(composeBom)
+	implementation("androidx.compose.material3:material3")
 
 	testImplementation(kotlin("test"))
 	implementation(kotlin("reflect"))
