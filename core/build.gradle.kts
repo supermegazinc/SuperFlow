@@ -43,6 +43,8 @@ publishing {
 	publications {
 		register<MavenPublication>("release") {
 			afterEvaluate {
+				groupId = "com.supermegazinc"
+				artifactId = "superflow"
 				from(components["release"])
 			}
 		}
