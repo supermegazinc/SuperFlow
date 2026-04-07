@@ -3,18 +3,21 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
 	alias(libs.plugins.android.library)
 	alias(libs.plugins.compose.compiler)
-	id("maven-publish")
 }
 
 android {
-	namespace = "com.supermegazinc.flow.core"
+	namespace = "com.supermegazinc.flow.example.compose"
+	compileSdk {
+		version = release(36)
+	}
 
 	defaultConfig {
 		minSdk = 21
+
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		consumerProguardFiles("consumer-rules.pro")
 	}
-	compileSdk = 36
+
 	buildTypes {
 		release {
 			isMinifyEnabled = false
@@ -33,38 +36,23 @@ android {
 			jvmTarget.set(JvmTarget.JVM_11)
 		}
 	}
-	publishing {
-		singleVariant("release") {
-			withSourcesJar()
-		}
-	}
 	buildFeatures {
 		compose = true
 	}
 }
 
-publishing {
-	publications {
-		register<MavenPublication>("release") {
-			afterEvaluate {
-				groupId = "com.supermegazinc"
-				artifactId = "superflow"
-				from(components["release"])
-			}
-		}
-	}
-}
-
 dependencies {
+	implementation(project(":core"))
 	implementation(libs.androidx.core.ktx)
 
 	testImplementation(libs.junit)
+	testImplementation(kotlin("test"))
 
 	val composeBom = platform("androidx.compose:compose-bom:2026.03.00")
 	implementation(composeBom)
 	androidTestImplementation(composeBom)
 	implementation(libs.androidx.material3)
-
-	testImplementation(kotlin("test"))
-	implementation(kotlin("reflect"))
+	implementation(libs.androidx.lifecycle.viewmodel.compose)
+	implementation(libs.androidx.ui.tooling.preview)
+	debugImplementation(libs.androidx.ui.tooling)
 }

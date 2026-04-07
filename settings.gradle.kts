@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SuperFlow"
 include(":core")
+include(":example:compose")
